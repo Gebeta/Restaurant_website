@@ -1,0 +1,85 @@
+.modal-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 98;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    z-index: 98;
+    width: 100%;
+    max-width: 400px;
+    background-color: rgb(243, 228, 225);
+    border-radius: 16px; 
+    padding: 25px;
+}
+
+.modal h1{
+    color: rgba(148, 37, 37, 0.884);
+}
+
+button{
+    color: white;
+    margin:0 1.5em;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 15px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: linear-gradient(to right, #914d3c, #dd6f5d);
+    font-weight: 700;
+    box-shadow: 3px 3px rgb(54 52 52 / 40%);
+    transition: 0.4s ease-out;
+}
+
+button:hover{
+    box-shadow: 1px 1px rgba(87, 81, 81, 0.6);
+}
+
+.close{
+    font-size: 2em;
+    color: red;
+    float: right;
+    cursor: pointer;
+}
+
+.close:hover{
+    font-weight: bold;
+}
+
+i{
+    font-weight: bold;
+    margin-right: 0.3em;
+    color: corals;
+}
+
+.fade-enter-from{
+    opacity: 0;
+}
+.fade-enter-to{
+    opacity: 1;
+}
+.fade-enter-active{
+    transition: opacity 0.3s ease;
+}
+
+.fade-leave-from{
+    opacity: 1;
+}
+.fade-leave-to{
+    opacity: 0;
+}
+.fade-leave-active{
+    transition: opacity 0.3s ease;
+}

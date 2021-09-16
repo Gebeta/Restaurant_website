@@ -1,0 +1,142 @@
+.add-form{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.form-control{
+    margin: 20px 0;
+}
+
+.form-control label{
+    display: block;
+    font-weight: bold;
+}
+
+.form-control input, textarea{
+    width: 55%;
+    height: 40px;
+    margin: 5px;
+    padding: 3px 7px;
+    font-size: 17px;
+}
+
+textarea{
+    height: 100px;
+}
+
+fieldset{
+    width: fit-content;
+    border-radius: 10px;
+}
+
+.select{
+    width: fit-content;
+    border-radius: 0.3em;
+}
+.select p{
+    text-align: center;
+    border-radius: 0.3em;
+    background-color: #ddd;
+    font-size: 16px;
+    padding: 0.2em 0.4em;
+    margin: 0.1em;
+    cursor: pointer;
+}
+
+.select p:hover{
+    background-color:#6b9b6be8;
+    color: white;
+}
+
+.form-control-check{
+    display: inline;
+    justify-content: space-between;
+}
+
+.form-control-check label{
+    flex: 1;
+}
+
+.form-control-check input{
+    flex: 2;
+    width: 20%;
+    height: 20px;
+}
+
+.btn{
+    display: inline-block;
+    width: 60%;
+    background: #6b9b6be8;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 5px;
+    font-size: 15px;
+}
+
+.form-control span{
+    font-size: 16px;
+    color: rgb(114, 77, 77);
+    display: inline;
+}
+
+.watermark { 
+  user-select: none;
+  position: absolute;
+  opacity: 0.15;
+  z-index: 1;
+  right: 0;
+  max-height: 95%;
+  max-width: 95%;
+}
+@media (max-width:900px) {
+    .watermark { 
+        max-width:50%;
+    }
+
+    fieldset{
+        flex-direction: column;
+    }
+}
+
+.img-enter-active,
+.slide-enter-active{
+    transform-origin: top;
+    transition: transform 0.6s ease-out;
+}
+
+.img-enter-to, 
+.slide-enter-to{
+    transform: scaleY(1);
+}
+
+.slide-enter-from, 
+.img-enter-from{
+    transform: scaleY(0);
+}
+
+.img-leave-active,
+.slide-leave-active{
+    transition: opacity 0.6s ease;
+}
+
+.img-leave-to, 
+.slide-leave-to{
+    opacity: 0;
+}
+
+.slide-leave-from{
+    opacity: 1;
+}
+
+.img-leave-from{
+    opacity: 0.15;
+}
+
+
+
+ 
+
