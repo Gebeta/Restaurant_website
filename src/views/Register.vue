@@ -14,7 +14,7 @@
             </div>  
             <GoogleMap
                 v-if="location != ''"
-                api-key="AIzaSyBU3yLIby2cfztVA9BACvDG1THm8r5WIFg"
+                api-key="your api key"
                 style="width: 100%; height: 300px; margin-bottom: 5px;"
                 :center="location"
                 :zoom="16">
