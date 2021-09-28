@@ -4,7 +4,7 @@
     <div class="modal" v-if="showDrivers" key="102" style="max-width: 800px;">
         <span @click="$emit('close')" class="close">&times;</span>
         <GoogleMap
-            api-key="AIzaSyBU3yLIby2cfztVA9BACvDG1THm8r5WIFg"
+            api-key="your-api-key"
             style="width: 100%; height: 400px; margin-bottom: 5px;"
             :center="JSON.parse(restaurant.address)"
             :zoom="12">
