@@ -39,8 +39,10 @@ export default {
     },
     methods:{
         calcDate(date,today){
-            let day = today - date.split('-')[2].split('T')[0]
+            let day = today.getDate() - date.split('-')[2].split('T')[0]
             switch(day){
+                case 0:
+                    return this.calcHour(date,today)
                 case 1:
                     return 'today'
                 case 2:
@@ -48,15 +50,24 @@ export default {
                 default:
                     return day + ' days ago'
             }
+        },     
+        calcHour(date,today){
+            let hour = today.getHours() - date.split(':')[0].split('T')[1] - 3
+            if(hour == 0){return this.calcMinutes(date,today)}
+            if(hour > 10){return 'today'}
+            return hour + ' hours ago'   
+        },
+        calcMinutes(date,timeNow){
+            let minute = timeNow.getMinutes() - date.split(':')[1]
+            return minute + ' minutes ago'
         }
     },
     updated(){
         if(this.showItem){
             var date = new Date()
-            let today = date.getDate()
             if(this.itm){
-                this.cdate = this.calcDate(this.itm.updatedAt,today)
-                this.udate = this.calcDate(this.itm.created_at,today)
+                this.cdate = this.calcDate(this.itm.updatedAt,date)
+                this.udate = this.calcDate(this.itm.created_at,date)
             }
         }
     }

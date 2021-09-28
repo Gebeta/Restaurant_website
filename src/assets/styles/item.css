@@ -127,7 +127,11 @@ input:checked + .slider:before {
 .desc{
     font-size: 18px;
     color: darkslategrey;
-    font-family: 'Trebuchet MS', sans-serif;;        
+    font-family: 'Trebuchet MS', sans-serif;        
+}
+
+#desc{
+    max-width: 400px;
 }
 
 .desc, .price{

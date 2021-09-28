@@ -97,8 +97,6 @@ export default {
                 business_license: this.tradeLicense.name
               };
 
-              console.log(obj)
-
               const res = await fetch('api/auth/signup', {
                     method: 'POST',
                     headers: {'Content-type': 'application/json'},

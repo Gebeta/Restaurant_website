@@ -1,31 +1,32 @@
 <template>
-    <Header :title="title" />
-    <div class="head">
+    <Header :title="title" :approved="is_approved"/>
+    <div class="head" v-if="is_approved">
         <Button 
             @click="toggleItem" 
             :text="showAddItem ? 'Close X' : 'Add Item' " 
             :color="showAddItem ? 'linear-gradient(to right, #914d3c, #dd6f5d)' : 'linear-gradient(to right, #4b423f, #736763)' "/>
         <div class="option">
-            Search<input type="text" v-model="search" name="search" @keyup="onSearch"/>
-            Sort by:<select name="sort" @change="sortItems">
+            <b>Search </b><input type="text" v-model="search" name="search" @keyup="onSearch"/>
+            <i> Sort by </i><select name="sort" @change="sortItems">
                 <option value="name">name</option>
                 <option value="price">price</option>
                 <option value="date">Date</option>
             </select>
-            Mode:<select id="mode" @change="onModeChange">
+            <i> Mode </i><select id="mode" @change="onModeChange">
                 <option value="light">Normal</option>
                 <option value="dark">Dark</option>
             </select>
         </div>
     </div>
-    <AddItem @add-item="addItem" :showAddItem="showAddItem" 
+    <AddItem @add-item="addItem" :showAddItem="showAddItem" v-if="is_approved"
         @add-notification="addNotification" :itm="itm" :update="update" :key="key"/>
-    <Items @delete-item="del" @delete-img="deleteImg" @see-details="seeDetails" 
+    <Items @delete-item="del" @delete-img="deleteImg" @see-details="seeDetails" v-if="is_approved"
          @toggle-avaliablity="toggleR" @edit-item="editItem" :items="items" />
     <div class="lds-dual-ring" v-if="loadingState=='loading'"></div>
     <transition name="noItem">
         <div v-if="loadingState=='done'" class="container" style="width:800px">
-            <h1>There are no items in your menu. Please Add items!</h1>
+            <h1>{{ is_approved ? 'There are no items in your menu. Please Add items!':
+                'Yor request for Approval is pending!'}}</h1>
             <img src="../assets/empty.png" />
         </div>
     </transition>
@@ -59,6 +60,7 @@ export default{
     data() {
         return{
             items: [],
+            is_approved: false,
             title: '',
             notifications: [],
             showModal: false,
@@ -247,10 +249,20 @@ export default{
     async created(){
         this.loadingState = 'loading'
         this.title = JSON.parse(localStorage.getItem('name'))
+        let id = JSON.parse(localStorage.getItem('id'))
+        this.is_approved = JSON.parse(localStorage.getItem('is_approved'))
+        const res = await fetch(`api/restaurant/${id}`,this.getHeader())
+        let rest = await res.json()
+        await store.commit('setApproved',arguments[1]= rest.is_approved)
         this.items = await this.fetchItems()
         if(this.items!=0){this.loadingState=''}
         this.$emit('change-mode',true)
-        setTimeout(() => {if(this.items==0){this.loadingState = 'done'}}, 2000);
+        setTimeout(() => {
+            if(this.items==0){
+                this.loadingState = 'done'
+            }
+            if(!this.is_approved){this.loadingState = 'done'}
+        }, 2000);
     },
     emits:['change-mode']
 }

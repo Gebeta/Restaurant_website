@@ -1,15 +1,20 @@
 <template>
-    <Header :title="title"/><hr>
+    <Header :title="title" :approved="approved"/><hr>
     <h2 style="color:green">Active orders</h2>
     <OrderList :orders="activeOrders" @see-order="seeOrder"/>
     <hr>
     <h2 style="color:orange;">Pending orders</h2>
     <OrderList :orders="pendingOrders"  @see-order="seeOrder"/>
     <hr>
+    <h2 style="color:purple;">Assigned orders</h2>
+    <OrderList :orders="assignedOrders"  @see-order="seeOrder"/>
+    <hr>
     <h2 style="color:brown">Archived Orders</h2>
     <OrderList :orders="archivedOrders" @see-order="seeOrder"/>
-    <OrderPopup  :showOrder="showOrder" @decline-order="DeclineOrder" 
-                @close="showOrder=false" :order="order" @call-driver="callDriver"/>
+    <OrderPopup  :showOrder="showOrder" @decline-order="DeclineOrder" @call-driver="callDriver"
+                @close="showOrder=false" :order="order" @accept-order="acceptOrder"/>
+    <DriverList :showDrivers="showDrivers" :drivers="drivers" 
+                @close="showDrivers=false" :orderId="order._id" @assigned="assigned"/>
     <NotificationList :notifications="notifications" 
         @remove-notification="removeNotification"/>
 </template>
@@ -18,6 +23,7 @@
 import Header from '../components/Header'
 import OrderList from '../components/OrderList'
 import OrderPopup from '../components/OrderPopup'
+import DriverList from '../components/DriverList'
 import NotificationList from '../components/NotificationList'
 
 export default {
@@ -26,16 +32,21 @@ export default {
         Header,
         OrderList,
         OrderPopup,
+        DriverList,
         NotificationList
     },
     data(){
         return{
             title: '',
             order: [],
+            drivers: [],
+            approved: false,
             showOrder: false,
+            showDrivers: false,
             activeOrders: [],
             pendingOrders: [],
             archivedOrders: [],
+            assignedOrders: [],
             notifications: []
         }
     },
@@ -49,6 +60,11 @@ export default {
         async fetchOrder(id){
             const res = await fetch(`api/order/${id}`,{headers: this.getHeader()})
             const data = await res.json()
+            return data
+        },
+        async fetchDrivers(){
+            const rest = await fetch('api/driver',{headers: this.getHeader()})
+            const data = await rest.json()
             return data
         },
         getHeader(){
@@ -69,7 +85,7 @@ export default {
             }
         },
         calcHour(orderTime,timeNow){
-            let hour = timeNow.getHours() - orderTime.split(':')[0].split('T')[1]
+            let hour = timeNow.getHours() - orderTime.split(':')[0].split('T')[1] - 3
             if(hour == 0){return this.calcMinutes(orderTime,timeNow)}
             if(hour > 10){return 'today'}
             return hour + ' hours ago'   
@@ -80,17 +96,7 @@ export default {
         },
         async DeclineOrder(){
             const orderToChg = await this.fetchOrder(this.order._id)
-            let updOrder = {}
-            switch(this.order.status){
-                case 'active':
-                    updOrder = {...orderToChg, status: 'pending'}
-                    break
-                case 'pending':
-                    updOrder = {...orderToChg, status: 'archived'}
-                    break
-                default:
-                    return
-            }
+            let updOrder = {...orderToChg, status: 'archived'}
 
             const res = await fetch(`api/order/${this.order._id}`,{
                 method: 'PUT',
@@ -99,11 +105,31 @@ export default {
             })
             this.showOrder = false
             const data = await res.json()
-            if(data){this.addNotification({id: data._id,message: 'order status changed to ' + data.status, type: 'success'})}
+            if(data){this.addNotification({id: data._id,message: 'Order ' + data.status, type: 'dismissible'})}
             this.initiate()
         },
-        callDriver(){
-            alert('Will be Implemented Soon!')
+        async acceptOrder(){
+            const orderToChg = await this.fetchOrder(this.order._id)
+            let updOrder = {...orderToChg, status: 'active'}
+
+            const res = await fetch(`api/order/${this.order._id}`,{
+                method: 'PUT',
+                headers: this.getHeader(),
+                body: JSON.stringify(updOrder)
+            })
+            this.showOrder = false
+            const data = await res.json()
+            if(data){this.addNotification({id: data._id,message: 'Order ' + data.status, type: 'success'})}
+            this.initiate()
+        },
+        async callDriver(){
+            this.drivers = await this.fetchDrivers()
+            this.showDrivers = true
+        },
+        async assigned(){
+            this.showOrder = false
+            this.showDrivers = false
+            this.initiate()
         },
         seeOrder(id,status){
             switch(status){
@@ -115,6 +141,9 @@ export default {
                     break
                 case 'archived':
                     this.order = this.archivedOrders.find((o) => o._id == id)
+                    break
+                case 'assigned':
+                    this.order = this.assignedOrders.find((o) => o._id == id)
             }
             this.showOrder = true
         },
@@ -127,6 +156,7 @@ export default {
             this.activeOrders = orders.filter(o => o.status == 'active')
             this.pendingOrders = orders.filter(o => o.status == 'pending')
             this.archivedOrders = orders.filter(o => o.status == 'archived')
+            this.assignedOrders = orders.filter(o => o.status == 'assigned')
         },
         addNotification(notif){
             this.notifications.push(notif)
@@ -138,6 +168,7 @@ export default {
     },
     async created(){
         this.title = JSON.parse(localStorage.getItem('name'))
+        this.approved = JSON.parse(localStorage.getItem('is_approved'))
         this.initiate()
     },
     emits:['change-mode']

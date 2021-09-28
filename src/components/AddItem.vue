@@ -19,8 +19,13 @@
                     <p id="injera">Injera Dish</p>
                     <p id="vegetable">Vegetable</p>
                     <p id="meat">Meat Dish</p>
-                    <p id="western">Western Dish</p>
+                    <p id="western">Western Dish</p><br>
                     <p id="spicy">Spicy</p>
+                    <p id="traditional">Traditional</p>
+                    <p id="fish">Fish</p>
+                    <p id="juice">Juice</p>
+                    <p id="sandwitch">Sandwitch</p>
+                    <p id="beverage">Beverage</p>
                 </div>
             </fieldset>
         </div>

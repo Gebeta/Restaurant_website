@@ -35,8 +35,9 @@ input{
 }
 
 .container{
-    background-image: linear-gradient(to right, #867B73, #b9b5a7);
-    border: 3px dotted #53586E;
+    background-image: linear-gradient(to right, #bbc9bf, #eaede7);
+    border: 3px dotted #546e53;
+    text-shadow: 0 0 3px #0b309b, 0 0 5px #535967;
     color: #FFF;
 }
 

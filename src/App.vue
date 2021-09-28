@@ -19,7 +19,7 @@ export default {
   methods:{
     changeMode(start){
       var mode = JSON.parse(localStorage.getItem('mode'))
-      if(start){
+      if(start & select != null){
         var select = document.getElementById("mode");
         if(mode){
             select.options[0].selected = true;

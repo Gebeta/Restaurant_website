@@ -18,6 +18,10 @@ const store = createStore({
             const token = arguments[1]
             localStorage.setItem('token',JSON.stringify(token))
         },
+        setApproved(){
+            const approved = arguments[1]
+            localStorage.setItem('is_approved',JSON.stringify(approved))
+        },
         toggleItem(){
             this.showAddItem = !this.showAddItem
             this.update = false

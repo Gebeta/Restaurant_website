@@ -49,6 +49,7 @@ export default {
                 store.commit('setToken', arguments[1] = data.token)
                 store.commit('setId', arguments[1] = data._id)
                 store.commit('setName', arguments[1] = data.name)
+                store.commit('setApproved', arguments[1] = data.is_approved)
                 this.$router.push('menu')
             }else{
                 this.addNotification({id: 1001, message: data.message,type: 'dismissible'})

@@ -41,6 +41,7 @@ fieldset{
     padding: 0.2em 0.4em;
     margin: 0.1em;
     cursor: pointer;
+    float: left;
 }
 
 .select p:hover{

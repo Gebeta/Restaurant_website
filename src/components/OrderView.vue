@@ -1,8 +1,9 @@
 <template>
     <li :class="['order '+order.status]" @click="$emit('see-order')">
-        <p><i>client: </i>{{order.client_id}}</p>
+        <p><i>client: </i>{{order.client_id.first_name}} {{order.client_id.last_name}}</p>
         <hr>
-        <p>{{order.items.length}} <i><b>items</b></i></p> 
+        <span v-for="itm in order.items" :key="itm.id">{{itm.quantity}} {{itm._id.foodName}}{{itm.quantity>1 ? 's':''}},</span>
+        <p>delivery fee: {{order.deliveryfee}}</p>
         <p><i>Total Price: </i>{{order.totalPrice}} <i>birr</i></p>
         <hr> 
         <p class="time">{{order.created_at}} </p> 
@@ -39,6 +40,11 @@ export default {
 .order.active{
     border-left: 3px solid green;
 }
+
+.order.assigned{
+    border-left: 3px solid purple;
+}
+
 
 .order.archived{
     border-left: 3px solid rgb(128, 47, 0);

@@ -9,7 +9,7 @@
             </span>
         </h3>
         <hr style="width:80%;float:left"><br>
-        <p><span class="desc">Description: </span>{{item.description}}</p>
+        <p id="desc"><span class="desc">Description: </span>{{item.description}}</p>
         <div class="images">
             <div v-for="image in item.imgLocation" :key="image" class="img-wrap">
                 <span class="close" @click="deleteImg(item._id, image)">&times;</span>
@@ -18,7 +18,7 @@
         </div>
         <hr>
         <p class="under"> 
-            <span class="price"><span class="desc">Price: </span>{{item.price}} Birr</span>
+            <span class="price"><span class="desc">Price: </span>{{item.price}} birr</span>
             <span @click="$emit('edit-item', id)"><i>edit</i><img src="../assets/edit-regular.png" class="mod"/></span>
         </p>
     </li>
